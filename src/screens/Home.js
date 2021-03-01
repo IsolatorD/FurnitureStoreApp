@@ -12,16 +12,48 @@ import {
 import Header from '../components/Home/Header'
 import Title from '../components/Home/Title'
 
-import { images, icons, COLORS, FONTS, SIZES } from '../constants/'
+import ScrollableTab from '../components/ScrollableTab'
+import ScrollableCard from '../components/ScrollableCard'
+import PromotionCard from '../components/PromotionCard'
 
-const Home = () => {
-  const [tabList, setTabList] = useState([])
+import { images, icons, COLORS, FONTS, SIZES, Tabs } from '../constants/'
+
+const Home = ({ navigation }) => {
+  const [tabList, setTabList] = useState(Tabs)
+  const [selectedTab, setSelectedTab] = useState(Tabs[0])
+
   return (
     <SafeAreaView
       style={style.container}
     >
       <Header />
-      <Title text='Test title' />
+      <Title text={selectedTab.title} />
+
+      <ScrollableTab
+        tabList={tabList}
+        selectedTab={selectedTab}
+        onPress={(item) => setSelectedTab(item)}
+      />
+
+      <View
+        style={{
+          flex: 1
+        }}
+      >
+        <ScrollableCard
+          navigation={navigation}
+          productList={selectedTab.productList}
+        />
+      </View>
+
+      <View
+        style={{
+          height: '19%',
+          justifyContent: 'center'
+        }}
+      >
+        <PromotionCard />
+      </View>
     </SafeAreaView>
   )
 }
@@ -29,7 +61,8 @@ const Home = () => {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white
+    backgroundColor: COLORS.white,
+    paddingTop: SIZES.padding
   },
   shadow: {
     shadowColor: '#000',
